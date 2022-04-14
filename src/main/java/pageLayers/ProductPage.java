@@ -6,6 +6,8 @@ import utils.ElementUtil;
 
 public class ProductPage {
 
+	public class ProductPage {
+
 	WebDriver driver;
 	ElementUtil util= new ElementUtil();
 
@@ -18,7 +20,8 @@ public class ProductPage {
 	// By locators
 
 	private By kindlePaperWhite = By.xpath("//span[contains(text(),'More versions to consider')]");
-	private By paperWhite = By.xpath("//span[@class='a-color-link' and text()='Kindle Paperwhite']");
+	private By paperWhite= By.xpath("(//a[@aria-label='Go to Kindle Paperwhite'])[1]");
+	private By targetToScroll=By.xpath("//span[@class='selection' and contains(text(),'Black')]");
 	private By WithoutUnlimited = By.xpath("//button[@id='a-autoid-14-announce']");
 	private By withoutAds = By.xpath("//button[@id='a-autoid-16-announce']");
 	private By addToCart = By.xpath("//span[@id='submit.add-to-cart']");
@@ -28,10 +31,14 @@ public class ProductPage {
 	
 	public void selectKindlePaperWhite() {
 
+		WebElement target=driver.findElement(targetToScroll);
+		
+		util.scrollToElement(driver, target);
 		util.waitforElementToBeClickable(driver, kindlePaperWhite);
 		driver.findElement(kindlePaperWhite).click();
+		
 		util.waitforElementToBeClickable(driver,paperWhite);
-		driver.findElement(paperWhite).click();
+		util.clickWithJavaScript(driver, driver.findElement(paperWhite));
 	}
 
 	public void selectWithoutKindleUnlimited() {
