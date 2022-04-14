@@ -30,9 +30,6 @@ public class ElementUtil {
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(element));
 	}
-	public void scrollToElement(WebDriver driver, WebElement element)  {
-	    ((JavascriptExecutor)driver).executeScript("arguments[0].scrollIntoView(true);",element);
-	}
 	
 	public void clickWithJavaScript(WebDriver driver, WebElement element) {
 		 ((JavascriptExecutor)driver).executeScript("arguments[0].click();",element);
