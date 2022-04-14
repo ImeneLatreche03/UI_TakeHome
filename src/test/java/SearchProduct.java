@@ -20,23 +20,22 @@ public class SearchProduct extends BaseTest {
 	ProductPage product;
 	CartPage cart;
 	String projectPath;
-	
-	
-	
+
 	@BeforeTest
 	public void setupBrowser() {
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 		driver.get("https://www.amazon.com/");
-		
+		driver.manage().window().maximize();
+
 	}
 
 	@Test
 	public void searchTheProduct() {
-		test=extent.createTest("searchTheProduct and confirm it is present");
+		test = extent.createTest("searchTheProduct and confirm it is present");
 		homePage = new HomePage(driver);
 		searchResult = new SearchResultPage(driver);
-		
+
 		// Search for Kindle
 		homePage.sendKeys("Kindle");
 		homePage.clickOnSearch();
@@ -48,39 +47,40 @@ public class SearchProduct extends BaseTest {
 	}
 
 	@Test(dependsOnMethods = { "searchTheProduct" })
-	public void goToProductPage() {
-		test=extent.createTest("Go to product Page and add it to cart");
-		
+	public void goToProductPage() throws Throwable {
+		test = extent.createTest("Go to product Page and add it to cart");
+
 		searchResult = new SearchResultPage(driver);
 		product = new ProductPage(driver);
-		
+
 		searchResult.clickOnProduct();
 		product.selectKindlePaperWhite();
 		product.selectWithoutKindleUnlimited();
 		product.selectWithoutAds();
+
 		product.addToCart();
 
 	}
-	
-	@Test (dependsOnMethods= {"goToProductPage"})	
+
+	@Test(dependsOnMethods = { "goToProductPage" })
 	public void verifyTheCart() throws Exception {
-		test=extent.createTest("verify if the product is added to cart");
-		cart=new CartPage(driver);
-		boolean flag= cart.productPresent();
-		Assert.assertTrue(flag,"procuct is not present");
-		boolean flag2= cart.addedToCArt();
-		Assert.assertTrue(flag2,"cart is Empty");	
-		
-		util= new ElementUtil();
+		test = extent.createTest("verify if the product is added to cart");
+		cart = new CartPage(driver);
+		boolean flag = cart.productPresent();
+		Assert.assertTrue(flag, "procuct is not present");
+		boolean flag2 = cart.addedToCArt();
+		Assert.assertTrue(flag2, "cart is Empty");
+
+		util = new ElementUtil();
 		util.takeScreenShot(driver);
 		projectPath = System.getProperty("user.dir");
-		test.addScreenCaptureFromPath(projectPath+"/test-output/ScreenShot/AddToCart.png");
-		
+		test.addScreenCaptureFromPath(projectPath + "/test-output/ScreenShot/AddToCart.png");
+
 	}
-		
-	@AfterTest 
+
+	@AfterTest
 	public void tearDownTest() {
 		driver.close();
 	}
-	
+
 }
