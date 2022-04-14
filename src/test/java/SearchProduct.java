@@ -12,13 +12,16 @@ import utils.ElementUtil;
 @Listeners(listeners.TestNgListeners.class)
 
 public class SearchProduct extends BaseTest {
-
+	
 	WebDriver driver;
-	ProductPage product;
 	ElementUtil util;
-	String projectPath;
 	HomePage homePage;
 	SearchResultPage searchResult;
+	ProductPage product;
+	CartPage cart;
+	String projectPath;
+	
+	
 	
 	@BeforeTest
 	public void setupBrowser() {
@@ -32,7 +35,7 @@ public class SearchProduct extends BaseTest {
 	public void searchTheProduct() {
 		test=extent.createTest("searchTheProduct and confirm it is present");
 		homePage = new HomePage(driver);
-		SearchResultPage searchResult = new SearchResultPage(driver);
+		searchResult = new SearchResultPage(driver);
 		
 		// Search for Kindle
 		homePage.sendKeys("Kindle");
@@ -46,7 +49,7 @@ public class SearchProduct extends BaseTest {
 
 	@Test(dependsOnMethods = { "searchTheProduct" })
 	public void goToProductPage() {
-		test=extent.createTest("TC_ResponseCode_405");
+		test=extent.createTest("Go to product Page and add it to cart");
 		
 		searchResult = new SearchResultPage(driver);
 		product = new ProductPage(driver);
@@ -62,7 +65,7 @@ public class SearchProduct extends BaseTest {
 	@Test (dependsOnMethods= {"goToProductPage"})	
 	public void verifyTheCart() throws Exception {
 		test=extent.createTest("verify if the product is added to cart");
-		CartPage cart=new CartPage(driver);
+		cart=new CartPage(driver);
 		boolean flag= cart.productPresent();
 		Assert.assertTrue(flag,"procuct is not present");
 		boolean flag2= cart.addedToCArt();
